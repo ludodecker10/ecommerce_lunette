@@ -41,11 +41,11 @@ CREATE TABLE categorie(
 CREATE TABLE commande(
    id_commande INT,
    date_achat DATE,
-   id_etat INT NOT NULL,
-   id_utilisateur INT NOT NULL,
+   etat_id INT NOT NULL,
+   utilisateur_id INT NOT NULL,
    PRIMARY KEY(id_commande),
-   FOREIGN KEY(id_etat) REFERENCES etat(id_etat),
-   FOREIGN KEY(id_utilisateur) REFERENCES utilisateur(id_utilisateur)
+   FOREIGN KEY(etat_id) REFERENCES etat(id_etat),
+   FOREIGN KEY(utilisateur_id) REFERENCES utilisateur(id_utilisateur)
 );
 
 CREATE TABLE lunette(
@@ -57,11 +57,11 @@ CREATE TABLE lunette(
    prix_lunette INT,
    fournisseur VARCHAR(50),
    marque VARCHAR(50),
-   id_couleur INT NOT NULL,
-   id_categorie INT NOT NULL,
+   couleur_id INT NOT NULL,
+   categorie_id INT NOT NULL,
    PRIMARY KEY(id_lunette),
-   FOREIGN KEY(id_couleur) REFERENCES couleur(id_couleur),
-   FOREIGN KEY(id_categorie) REFERENCES categorie(id_categorie)
+   FOREIGN KEY(couleur_id) REFERENCES couleur(id_couleur),
+   FOREIGN KEY(categorie_id) REFERENCES categorie(id_categorie)
 );
 
 CREATE TABLE ligne_commande(
