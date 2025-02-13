@@ -11,35 +11,31 @@ client_panier = Blueprint('client_panier', __name__,
 
 @client_panier.route('/client/panier/add', methods=['POST'])
 def client_panier_add():
-    mycursor = get_db().cursor()
     id_client = session['id_user']
-    id_article = request.form.get('id_article')
+    id_lunette = request.form.get('id_article')
     quantite = request.form.get('quantite')
-    # ---------
-    #id_declinaison_article=request.form.get('id_declinaison_article',None)
-    id_declinaison_article = 1
+    mycursor = get_db().cursor()
 
-# ajout dans le panier d'une déclinaison d'un article (si 1 declinaison : immédiat sinon => vu pour faire un choix
-    # sql = '''    '''
-    # mycursor.execute(sql, (id_article))
-    # declinaisons = mycursor.fetchall()
-    # if len(declinaisons) == 1:
-    #     id_declinaison_article = declinaisons[0]['id_declinaison_article']
-    # elif len(declinaisons) == 0:
-    #     abort("pb nb de declinaison")
-    # else:
-    #     sql = '''   '''
-    #     mycursor.execute(sql, (id_article))
-    #     article = mycursor.fetchone()
-    #     return render_template('client/boutique/declinaison_article.html'
-    #                                , declinaisons=declinaisons
-    #                                , quantite=quantite
-    #                                , article=article)
+    sql = "SELECT * FROM ligne_panier WHERE id_lunette = %s AND id_utilisateur=%s"
+    mycursor.execute(sql, (id_lunette, id_client))
+    article_panier = mycursor.fetchone()
 
-# ajout dans le panier d'un article
+    mycursor.execute("SELECT * FROM lunette WHERE id_lunette = %s", (id_lunette,))
+    article = mycursor.fetchone()
 
+    if not (article_panier is None) and article_panier['quantite'] >= 1:
+        tuple_update = (quantite, id_client, id_lunette)
+        sql = "UPDATE ligne_panier SET quantite = quantite+%s WHERE id_utilisateur = %s AND id_lunette=%s"
+        mycursor.execute(sql, tuple_update)
+    else:
+        tuple_insert = (id_client, id_lunette, quantite)
+        sql = "INSERT INTO ligne_panier(id_utilisateur, id_lunette, quantite, date_ajout) VALUES (%s,%s,%s, current_timestamp )"
+        mycursor.execute(sql, tuple_insert)
+
+    get_db().commit()
 
     return redirect('/client/article/show')
+
 
 @client_panier.route('/client/panier/delete', methods=['POST'])
 def client_panier_delete():
@@ -71,13 +67,13 @@ def client_panier_delete():
 @client_panier.route('/client/panier/vider', methods=['POST'])
 def client_panier_vider():
     mycursor = get_db().cursor()
-    client_id = session['id_user']
-    sql = ''' sélection des lignes de panier'''
-    items_panier = []
+    id_client = session['id_user']
+    sql = '''SELECT * FROM ligne_panier WHERE id_utilisateur = %s'''
+    retour = mycursor.execute(sql, (id_client,))
+    items_panier = mycursor.fetchall()
     for item in items_panier:
-        sql = ''' suppression de la ligne de panier de l'article pour l'utilisateur connecté'''
-
-        sql2=''' mise à jour du stock de l'article : stock = stock + qté de la ligne pour l'article'''
+        sql = '''DELETE FROM ligne_panier WHERE id_lunette = %s AND id_utilisateur = %s'''
+        mycursor.execute(sql, (item['id_lunette'], id_client))
         get_db().commit()
     return redirect('/client/article/show')
 

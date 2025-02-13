@@ -10,17 +10,19 @@ fixtures_load = Blueprint('fixtures_load', __name__,
 @fixtures_load.route('/base/init')
 def fct_fixtures_load():
     mycursor = get_db().cursor()
+    sql = '''DROP TABLE IF EXISTS article_commande;'''
+    mycursor.execute(sql)
     sql = '''DROP TABLE IF EXISTS ligne_panier;'''
     mycursor.execute(sql)
     sql = '''DROP TABLE IF EXISTS ligne_commande;'''
     mycursor.execute(sql)
     sql = '''DROP TABLE IF EXISTS lunette;'''
     mycursor.execute(sql)
-    sql = '''DROP TABLE IF EXISTS commande;'''
-    mycursor.execute(sql)
     sql = '''DROP TABLE IF EXISTS categorie;'''
     mycursor.execute(sql)
     sql = '''DROP TABLE IF EXISTS couleur;'''
+    mycursor.execute(sql)
+    sql = '''DROP TABLE IF EXISTS commande;'''
     mycursor.execute(sql)
     sql = '''DROP TABLE IF EXISTS etat;'''
     mycursor.execute(sql)
@@ -35,7 +37,7 @@ def fct_fixtures_load():
        nom VARCHAR(50),
        password VARCHAR(255),
        role VARCHAR(50),
-       est_actif VARCHAR(255),
+        est_actif TINYINT(1),
        PRIMARY KEY(id_utilisateur)
     );
     '''
@@ -56,55 +58,69 @@ def fct_fixtures_load():
 
     sql='''
     CREATE TABLE categorie(
-       id_categorie INT,
+       id_categorie INT AUTO_INCREMENT,
        libelle_categorie VARCHAR(50),
        PRIMARY KEY(id_categorie)
     );
     '''
     mycursor.execute(sql)
     sql='''
-    INSERT INTO type_article
+    INSERT INTO  categorie(id_categorie, libelle_categorie) VALUES
+                                                             (1,'Soleil'),
+                                                             (2,'Protection'),
+                                                             (3,'Vue');
     '''
     mycursor.execute(sql)
 
 
     sql='''
     CREATE TABLE etat(
-       id_etat INT,
+       id_etat INT AUTO_INCREMENT,
        libelle_etat VARCHAR(50),
        PRIMARY KEY(id_etat)
     );
     '''
     mycursor.execute(sql)
     sql = '''
-    INSERT INTO etat
+    INSERT INTO etat(id_etat, libelle_etat) VALUES
+                                             (1,'Stockée'),
+                                             (2,'Envoyée'),
+                                             (3,'Livrée');
      '''
     mycursor.execute(sql)
 
 
     sql='''
     CREATE TABLE couleur(
-       id_couleur INT,
-       libelle_couleur TEXT,
+       id_couleur INT AUTO_INCREMENT,
+       libelle_couleur VARCHAR(50),
        PRIMARY KEY(id_couleur)
     );
     '''
     mycursor.execute(sql)
     sql='''
-    INSERT INTO couleur
+    INSERT INTO couleur(id_couleur, libelle_couleur) VALUES
+                                                     (1,'noir'),
+                                                     (2,'bleu'),
+                                                     (3,'rouge'),
+                                                     (4,'blanc'),
+                                                     (5,'rose');
     '''
     mycursor.execute(sql)
 
     sql = '''
     CREATE TABLE lunette(
-       id_lunette INT,
+       id_lunette INT AUTO_INCREMENT,
        nom_lunette VARCHAR(50),
        sexe VARCHAR(50),
        indice_protection INT,
-       taille_monture VARCHAR(50),
-       prix_lunette INT,
-       fournisseur VARCHAR(50),
+       longueur_branches INT,
+       largeur_verres INT,
+       largeur_pont INT,
+       prix_lunette DECIMAL(10,2),
        marque VARCHAR(50),
+        stock INT,
+        image VARCHAR(255),
        id_couleur INT NOT NULL,
        id_categorie INT NOT NULL,
        PRIMARY KEY(id_lunette),
@@ -114,25 +130,31 @@ def fct_fixtures_load():
      '''
     mycursor.execute(sql)
     sql = '''
-    INSERT INTO article (
+    INSERT INTO lunette(id_lunette, nom_lunette, sexe, indice_protection, longueur_branches,largeur_verres,largeur_pont, prix_lunette, marque, stock, image, id_couleur, id_categorie) VALUES
+            (1,'Hedley','homme',NULL,145,53,18,74.99,'SmartBuy Collection',5,'lunette1',4,3),
+            (2,'L6024S 662','homme',3,145,52,22,120.99,'Lacoste',2,'lunette2',5,1),
+            (3,'Murf','femme',NULL,148,53,19,54.99,'SmartBuy Collection',3,'lunette3',1,3),
+            (4,'RB2140 Original Wayfarer 901','homme',2,150,50,22,138.99,'Ray-Ban',6,'lunette4',1,1);
 
          '''
     mycursor.execute(sql)
 
     sql = '''
     CREATE TABLE commande(
-       id_commande INT,
+       id_commande INT AUTO_INCREMENT,
        date_achat DATE,
        id_etat INT NOT NULL,
        id_utilisateur INT NOT NULL,
        PRIMARY KEY(id_commande),
        FOREIGN KEY(id_etat) REFERENCES etat(id_etat),
        FOREIGN KEY(id_utilisateur) REFERENCES utilisateur(id_utilisateur)
-    ); 
+    );
      '''
     mycursor.execute(sql)
     sql = '''
-    INSERT INTO commande 
+    INSERT INTO commande(id_commande, date_achat, id_etat, id_utilisateur) VALUES
+        (1,'2024-08-24',1,1),
+        (2,'2025-01-13',2,2);
                  '''
     mycursor.execute(sql)
 
@@ -140,7 +162,7 @@ def fct_fixtures_load():
     CREATE TABLE ligne_commande(
        id_commande INT,
        id_lunette INT,
-       prix INT,
+       prix DECIMAL(10,2),
        quantite INT,
        PRIMARY KEY(id_commande, id_lunette),
        FOREIGN KEY(id_commande) REFERENCES commande(id_commande),
@@ -148,11 +170,6 @@ def fct_fixtures_load():
     );
          '''
     mycursor.execute(sql)
-    sql = '''
-    INSERT INTO ligne_commande 
-         '''
-    mycursor.execute(sql)
-
 
     sql = '''
     CREATE TABLE ligne_panier(
@@ -164,9 +181,41 @@ def fct_fixtures_load():
        FOREIGN KEY(id_utilisateur) REFERENCES utilisateur(id_utilisateur),
        FOREIGN KEY(id_lunette) REFERENCES lunette(id_lunette)
     );
+
          '''
     mycursor.execute(sql)
 
+    sql='''
+    CREATE TABLE article_commande(
+        id_lunette INT,
+        id_commande INT,
+        PRIMARY KEY (id_lunette,id_commande),
+        FOREIGN KEY (id_lunette) REFERENCES lunette(id_lunette),
+        FOREIGN KEY (id_commande) REFERENCES commande(id_commande)
+    );
+        '''
+    mycursor.execute(sql)
+
+    sql='''
+    CREATE TABLE couleur_dispo(
+        id_lunette INT,
+        id_couleur INT,
+        FOREIGN KEY (id_lunette) REFERENCES lunette(id_lunette),
+        FOREIGN KEY (id_couleur) REFERENCES couleur(id_couleur)
+    );
+    '''
+    mycursor.execute(sql)
+
+    sql='''
+    INSERT iNTO couleur_dispo(id_lunette, id_couleur) VALUES
+        (1,2),
+        (1,3),
+        (2,2),
+        (2,1),
+        (3,4),
+        (3,1);
+    '''
+    mycursor.execute(sql)
 
     get_db().commit()
     return redirect('/')

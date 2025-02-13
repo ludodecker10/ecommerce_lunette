@@ -17,11 +17,11 @@ admin_article = Blueprint('admin_article', __name__,
 @admin_article.route('/admin/article/show')
 def show_article():
     mycursor = get_db().cursor()
-    sql = '''  requête admin_article_1
+    sql = '''SELECT * FROM lunette
     '''
     mycursor.execute(sql)
-    articles = mycursor.fetchall()
-    return render_template('admin/article/show_article.html', articles=articles)
+    lunette = mycursor.fetchall()
+    return render_template('admin/article/show_article.html', lunette=lunette)
 
 
 @admin_article.route('/admin/article/add', methods=['GET'])

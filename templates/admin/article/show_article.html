@@ -26,12 +26,12 @@ articles (tableau de dictionnaires)
         </tr>
     </thead>
     <tbody>
-    {% if articles | length >= 1 %}
-        {% for ligne in articles %}
+    {% if lunette | length >= 1 %}
+        {% for ligne in lunette %}
            <tr>
-                  <td>{{ ligne.nom }}</td>
-                  <td>{{ ligne.id_article }}</td>
-                  <td><span style="color: red">{{ ligne.libelle }}</span> ({{ ligne.type_article_id }})</td>
+                  <td>{{ ligne.nom_lunette }}</td>
+                  <td>{{ ligne.id_lunette }}</td>
+                  <td><span style="color: red">{{ ligne.nom_lunette }}</span> ({{ ligne.id_categorie }})</td>
                   <td>{#{ ligne.prix }#}  {{  "{:,.2f} €".format(ligne.prix) }}</td>
                   <td>
                   {% if ligne.stock is defined %}
@@ -54,7 +54,7 @@ articles (tableau de dictionnaires)
                    <td>
                   {% if ligne.nb_commentaires_nouveaux is defined %}
                      {% if ligne.nb_commentaires_nouveaux > 0 %}
-                         <a href="/admin/article/commentaires?id_article={{ ligne.id_article }}"><strong style="color: red">{{ ligne.nb_commentaires_nouveaux }} avis non lu(s) ⚠️ </strong></a>
+                         <a href="/admin/article/commentaires?id_article={{ ligne.id_lunette }}"><strong style="color: red">{{ ligne.nb_commentaires_nouveaux }} avis non lu(s) ⚠️ </strong></a>
                      {% else %}
                         <strong class="text-muted"></strong>
                      {% endif %}
@@ -79,9 +79,9 @@ articles (tableau de dictionnaires)
                         {% endif %}
                   </td>
                   <td>
-                      <a  class="btn btn-outline-danger" href="/admin/article/delete?id_article={{ ligne.id_article }}" onclick="return confirm('Are you sure?')" >supprimer</a>
-                      <a  class="btn btn-outline-warning" href="/admin/article/edit?id_article={{ ligne.id_article }}">editer</a>
-                      <a  class="btn btn-outline-warning" href="/admin/article/commentaires?id_article={{ ligne.id_article }}">commentaires</a>
+                      <a  class="btn btn-outline-danger" href="/admin/article/delete?id_article={{ ligne.id_lunette }}" onclick="return confirm('Are you sure?')" >supprimer</a>
+                      <a  class="btn btn-outline-warning" href="/admin/article/edit?id_article={{ ligne.id_lunette }}">editer</a>
+                      <a  class="btn btn-outline-warning" href="/admin/article/commentaires?id_article={{ ligne.id_lunette }}">commentaires</a>
                   </td>
            </tr>
         {% endfor %}
