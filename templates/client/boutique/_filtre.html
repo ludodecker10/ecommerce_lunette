@@ -3,7 +3,6 @@
         <input name="filter_word"  type="text" placeholder="Recherche" size="10" class="form-control"
                value="{% if session['filter_word'] %}{{ session['filter_word'] }}{% endif %}"  >
     </div>
-   {% if items_filtre is defined %}
     <div class="form-group">
         <h4>Types articles</h4>
         {% for item_filtre in categorie %}
@@ -18,7 +17,6 @@
             <br/>
         {% endfor %}
     </div>
-    {% endif %}
 
     <div class="form-group">
         <h5>Prix :</h5>

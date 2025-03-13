@@ -1,26 +1,21 @@
 {% extends "client/layout_client.html" %}
 {% block body %}
     <div class="container-fluid">
-            {% if articles_commande %}
+        {% if article_commande %}
             <h3>Recapitulatifs de la commande selectionnée</h3>
             <table class="table">
                 <thead class="thead-dark">
                     <tr><th>Nom</th><th>Quantite</th><th>Prix</th><th>Prix total</th></tr>
                 </thead>
                 <tbody>
-                        {% for ligne in articles_commande %}
+                        {% for ligne in article_commande %}
                             <tr>
-                                <td>{{ ligne.nom }}
+                                <td>{{ ligne.nom_lunette }}
                                 {% if ligne.nb_declinaisons is defined and ligne.nb_declinaisons > 1 %}
                                     <span style="color:rgba(255,197,197,0.6);"> ( {{ ligne.nb_declinaisons }} declinaisons )</span>
                                     <span style="color:#6dcea2">
                                     {% if ligne.couleur_id != 1 %}
                                         {{ ligne.libelle_couleur }} 
-                                    {% endif %}
-                                    </span>
-                                    <span  style="color:#d941c2">
-                                    {% if ligne.taille_id != 1 %}
-                                        {{ ligne.libelle_taille }} 
                                     {% endif %}
                                     </span>
                                 {% endif %}
@@ -63,23 +58,22 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for commande in commandes %}
-                            <tr id="" {% if commande.etat_id == 1 %} style="background: #FFD600; font-weight: bold;" {% endif %}>
-                                <td>{{ commande.date_achat.strftime('%d-%m-%Y') }}</td>
-                                <td> {{ commande.nbr_articles }} </td>
-                                <td>
-                                    {{ "{:,.2f} €".format(commande.prix_total) }}
-                                </td>
+                        {% for commandes in commande %}
+                            <tr id="" {% if commandes.etat_id == 1 %} style="background: #FFD600; font-weight: bold;" {% endif %}>
+                                <td>{{ commandes.date_achat }}</td>
+                                <td> {{ commandes.nbr_articles }} </td>
+                                <td> {{ commandes.prix }}
+                                                                    </td>
                                 <td style="text-align: center;">
-                                    {% if commande.etat_id == 1 %} <div style="background-color: #ba8b00; padding: 5px;">
-                                     {{ commande.libelle }}
+                                    {% if commandes.etat_id == 1 %} <div style="background-color: #ba8b00; padding: 5px;">
+                                     {{ commandes.libelle_etat }}
                                     </div>
                                     {% else %} <div style="background-color: #34ce57; padding: 5px;">
-                                        {{ commande.libelle }} </div>
+                                        {{ commandes.libelle_etat }} </div>
                                     {% endif %}
                                 </td>
                                 <td style="text-align: center;">
-                                    <a href="/client/commande/show?id_commande={{ commande.id_commande }}">
+                                    <a href="/client/commande/show?id_commande={{ commandes.id_commande }}">
                                         <button class="btn btn-primary" > Details </button>
                                     </a>
                                 </td>

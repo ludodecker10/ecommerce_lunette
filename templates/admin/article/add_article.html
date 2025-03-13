@@ -13,23 +13,32 @@
                 <label for="nom">Nom :
                     <input name="nom" type="text" value=""  class="form-control" required>
                 </label>
+                <label for="stock">stock :
+                    <input name="stock" type="number" value=""  class="form-control" required>
+                </label>
+                <label for="indice_protection">indice_protection :
+                    <input name="indice_protection" type="number" min="0" step="1" max="4" value=""  class="form-control" required>
+                </label>
                 <label for="prix">Prix (€) :
-                    <input name="prix" type="number" min="0.0" step="0.01" max="2147483647" value=""  class="form-control" required>
+                    <input name="prix" type="number" min="0.0" step="0.01" value=""  class="form-control" required>
+                </label>
+                <label for="marque">marque :
+                    <input name="marque" type="text" value=""  class="form-control" required>
                 </label>
                 <label for="image"> Image :
                     <input name="image" type="file" onchange="loadFile(event)"   class="form-control">
                 </label>
-
-                <label for="type_article_id">Type de l'article :
-                    <select name="type_article_id" required class="form-select">
-                        <option value="">Sélectionner un type d'article</option>
-                        {% for type in types_article %}
-                             <option value="{{ type.id_type_article }}"> {{ type.libelle }}</option>
-                        {% endfor %}
-                    </select>
-                </label>
                 <label for="description">description :
                     <input name="description" type="text" class="form-control" >
+                </label>
+
+                <label for="id_categorie">Type de l'article :
+                    <select name="id_categorie" required class="form-select">
+                        <option value="">Sélectionner un type d'article</option>
+                        {% for type in categorie %}
+                             <option value="{{ type.id_categorie }}"> {{ type.libelle_categorie }}</option>
+                        {% endfor %}
+                    </select>
                 </label>
                 <label for="submit">
                     <input name="submit" type="submit" value="Ajouter" class="btn btn-primary mt-2">

@@ -32,7 +32,7 @@ articles (tableau de dictionnaires)
                   <td>{{ ligne.nom_lunette }}</td>
                   <td>{{ ligne.id_lunette }}</td>
                   <td><span style="color: red">{{ ligne.nom_lunette }}</span> ({{ ligne.id_categorie }})</td>
-                  <td>{#{ ligne.prix }#}  {{  "{:,.2f} €".format(ligne.prix) }}</td>
+                  <td>{{ ligne.prix_lunette }}</td>
                   <td>
                   {% if ligne.stock is defined %}
                      {% if ligne.stock != None  %}
@@ -71,7 +71,7 @@ articles (tableau de dictionnaires)
                          decli ND
                       {% endif %}
                   </td>
-                  <td>{{ ligne.image }}
+                  <td>
                         {%  if ligne.image is not none %}
                             <img style="width:40px;height:40px"  src="{{ url_for('static', filename = 'images/' + ligne['image']) }}"  alt="image  de {{ ligne.nom }}" >
                         {% else %}
@@ -79,9 +79,9 @@ articles (tableau de dictionnaires)
                         {% endif %}
                   </td>
                   <td>
-                      <a  class="btn btn-outline-danger" href="/admin/article/delete?id_article={{ ligne.id_lunette }}" onclick="return confirm('Are you sure?')" >supprimer</a>
-                      <a  class="btn btn-outline-warning" href="/admin/article/edit?id_article={{ ligne.id_lunette }}">editer</a>
-                      <a  class="btn btn-outline-warning" href="/admin/article/commentaires?id_article={{ ligne.id_lunette }}">commentaires</a>
+                      <a  class="btn btn-outline-danger" href="/admin/article/delete?id_lunette={{ ligne.id_lunette }}" onclick="return confirm('Are you sure?')" >supprimer</a>
+                      <a  class="btn btn-outline-warning" href="/admin/article/edit?id_lunette={{ ligne.id_lunette }}">editer</a>
+                      <a  class="btn btn-outline-warning" href="/admin/article/commentaires?id_lunette={{ ligne.id_lunette }}">commentaires</a>
                   </td>
            </tr>
         {% endfor %}

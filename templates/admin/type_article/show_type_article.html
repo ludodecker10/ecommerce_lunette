@@ -16,15 +16,15 @@
         </tr>
     </thead>
     <tbody>
-    {% if types_article | length >= 1 %}
-        {% for ligne in types_article %}
+    {% if categorie | length >= 1 %}
+        {% for ligne in categorie %}
            <tr>
-                  <td>{{ ligne.libelle }}</td>
-                  <td>{{ ligne.id_type_article }}</td>
-                   <td><span style="color: red">{{ ligne.nbr_articles }}</span></td>
+                  <td>{{ ligne.libelle_categorie }}</td>
+                  <td>{{ ligne.id_categorie }}</td>
+                   <td><span style="color: red">{{ ligne.nbr_lunette }}</span></td>
                   <td>
-                      <a class="btn btn-outline-danger" href="/admin/type-article/edit?id_type_article={{ ligne.id_type_article }}">editer</a>&nbsp;
-                      <a class="btn btn-outline-warning" href="/admin/type-article/delete?id_type_article={{ ligne.id_type_article }}">supprimer</a>
+                      <a class="btn btn-outline-danger" href="/admin/type-article/edit?id_categorie={{ ligne.id_categorie }}">editer</a>&nbsp;
+                      <a class="btn btn-outline-warning" href="/admin/type-article/delete?id_categorie={{ ligne.id_categorie }}">supprimer</a>
                   </td>
            </tr>
         {% endfor %}

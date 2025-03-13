@@ -16,17 +16,17 @@
         </div>
 
         <div class="bg-light p-3">
-            <h1>Les articles</h1>
+            <h1>Les lunettes</h1>
         </div>
 
         <div class="row">
                 {% for article in lunette  %}
                         <div class="card col-4 mt-4 p-1">
                             <div class="card-body border-dark rounded p-1">
-                                <a href="/client/article/details?id_article={{ article.id_lunette }}" >
+                                <a href="/client/article/details?id_lunette={{ article.id_lunette }}" >
                                 <h3 class="card-title">
-                                    <span style="color: #0b2e13">{{ article.nom_lunette }}</span><br>
-                                    {{ article.prix_lunette }}
+                                    <span style="color: #0b2e13">{{ article.nom_lunette }}-{{ article.libelle_couleur }}</span><br>
+                                    {{ article.prix_declinaison }}
                                     €
                                 </h3>
                                      {%  if article.image is not none %}
@@ -39,7 +39,7 @@
 {# #}                                {% if  article.stock is defined and article.stock != None %}
 {# #}                                    {% if article.stock > 0 %}
                                         <form  action="/client/panier/add"  method="post" class="col-5">
-                                            <input type="hidden" name="id_article" value="{{ article.id_lunette }}">
+                                            <input type="hidden" name="id_declinaison_lunette" value="{{ article.id_declinaison_lunette }}">
                                             <div class="input-group">
                                             <button class="btn  btn-success"  id="button-addon1">
                                                 <i class="fas fa-shopping-cart">Ajouter</i>
@@ -52,9 +52,9 @@
                                      <div class="col-2 align-content-end">
                                     {% if article.liste_envie is defined %}
                                          {%if  article.liste_envie== 1%}
-                                             <a href="/client/envie/add?id_article={{ article.id_lunette }}" style="text-decoration: none">💛</a>
+                                             <a href="/client/envie/add?id_lunette={{ article.id_lunette }}" style="text-decoration: none">💛</a>
                                          {% else %}
-                                             <a href="/client/envie/add?id_article={{ article.id_lunette }}" style="text-decoration: none">🤍</a>
+                                             <a href="/client/envie/add?id_lunette={{ article.id_lunette }}" style="text-decoration: none">🤍</a>
                                          {% endif %}
                                     {% endif %}
                                      </div>
@@ -65,7 +65,7 @@
                                  {% if article.stock > 0 %}
                                     <small class="text-muted">Stock restant : {{ article.stock }}</small>
                                  {% else %}
-                                    <small class="text-muted">article  momentanément indisponible</small>
+                                    <small class="text-muted">lunette momentanément indisponible</small>
                                  {% endif %}
                                 {% if article.nb_declinaison is defined and article.nb_declinaison != None %}
                                     ({{ article.nb_declinaison }} d.)
@@ -74,14 +74,14 @@
                             {% endif %}
                             {% if article.nb_notes is defined %}
                                 {% if article.nb_notes > 0 %}
-                                 <a  href="/client/article/details?id_article={{ article.id_article }}" >
+                                 <a  href="/client/article/details?id_lunette={{ article.id_lunette }}" >
                                     <span style="color: #3A7734"> note : {{  "{:,.1f}".format(article.moy_notes) }}({{ article.nb_notes }})</span>
                                  </a>
                                 {% endif %}
                             {% endif %}
                             {% if article.nb_avis is defined %}
                                 {% if article.nb_avis > 0 %}
-                                 <a href="/client/article/details?id_article={{ article.id_article }}" >
+                                 <a href="/client/article/details?id_lunette={{ article.id_lunette }}" >
                                     <span style="color: #3A7734">({{ article.nb_avis }} avis)</span>
                                  </a>
                                 {% endif %}
@@ -91,5 +91,5 @@
                 {% endfor %}
         </div>
     </div>
-{#    {{ articles | pprint }}#}
+{#    {{ articles | print }}#}
 {% endblock %}

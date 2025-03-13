@@ -7,7 +7,7 @@ def get_db():
     if db is None:
         #
         db = g._database = pymysql.connect(
-            host="serveurmysql.iut-bm.univ-fcomte.fr",
+            host="172.30.5.90",
             # host="serveurmysql",
             user="vchaudri",
             password="mdp",

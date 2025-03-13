@@ -1,6 +1,5 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
-
 from flask import Blueprint
 from flask import Flask, request, render_template, redirect, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -33,6 +32,7 @@ def auth_login_post():
             session['login'] = user['login']
             session['role'] = user['role']
             session['id_user'] = user['id_utilisateur']
+            session['filter_word'] = ''
             print(user['login'], user['role'])
             if user['role'] == 'ROLE_admin':
                 return redirect('/admin/commande/index')

@@ -36,26 +36,26 @@
                 </tr>
             </thead>
             <tbody>
-                {% for adresse in adresses %}
+                {% for adresses in adresse %}
                     <tr
-                            {% if adresse.valide is defined and adresse.valide==0 %} style="color: darkorange"{% endif %}
-                            {% if adresse.favori is defined and adresse.favori==1 %} style="color: blue; font-weight: bolder;"{% endif %}
+                            {% if adresses.valide is defined and adresses.valide==0 %} style="color: darkorange"{% endif %}
+                            {% if adresses.favori is defined and adresses.favori==1 %} style="color: blue; font-weight: bolder;"{% endif %}
                     >
 
-                        <td>{{ adresse.nom }}
-                            {% if adresse.favori is defined and adresse.favori==1 %}💛{% endif %}
+                        <td>{{ adresses.nom }}
+                            {% if adresses.favori is defined and adresses.favori==1 %}💛{% endif %}
                         </td>
-                        <td>{{ adresse.rue }}</td>
-                        <td>{{ adresse.code_postal }}</td>
-                        <td>{{ adresse.ville }}</td>
-                        <td> {% if adresse.nbr_commandes is defined %}{{ adresse.nbr_commandes }} {% endif %} </td>
+                        <td>{{ adresses.rue }}</td>
+                        <td>{{ adresses.code_postal }}</td>
+                        <td>{{ adresses.ville }}</td>
+                        <td> {% if adresses.nbr_commandes is defined %}{{ adresses.nbr_commandes }} {% endif %} </td>
                         <td>
-                            {% if adresse.valide is defined and adresse.valide==0 %}
+                            {% if adresses.valide is defined and adresses.valide==0 %}
                                 <span style="color: darkorange">*</span>
                             {% else %}
-                                <a class="btn btn-primary" href="/client/coordonnee/edit_adresse?id_adresse={{ adresse.id_adresse }}"> Modifier </a>
+                                <a class="btn btn-primary" href="/client/coordonnee/edit_adresse?id_adresse={{ adresses.id_adresse }}"> Modifier </a>
                             <form action="/client/coordonnee/delete_adresse" style="display: inline-block;"  method="post">
-                                <input type="hidden"  name="id_adresse" value="{{ adresse.id_adresse }}">
+                                <input type="hidden"  name="id_adresse" value="{{ adresses.id_adresse }}">
                                 <button class="btn btn-primary" > Supprimer </button>
                             </form>
                             {% endif %}

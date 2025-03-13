@@ -1,17 +1,17 @@
             <div class="col-7">
-            {% if articles_panier | length >= 1 %}
+            {% if ligne_panier %}
                 <h3>Liste des articles dans mon panier</h3>
                 <table class="table table-hover table-responsive">
                     <tr>
                         <th style="width: 300px">Nom</th>
-                        <th style="width: 50px">Quantité</th>
+                          <th style="width: 50px">Quantité</th>
                         <th style="width: 50px">Prix</th>
                         <th style="width: 100px">Sous-Total</th>
                         <th style="width: 400px">Action</th>
                     </tr>
                     {% for item_panier in ligne_panier %}
                         <tr>
-                            <td>{{item_panier.id_lunette}}
+                            <td>{{item_panier.nom_lunette}}
                             {% if item_panier.id_couleur is defined and item_panier.id_couleur != None and item_panier.id_couleur >1 %}
                                 <small style="color: #6dcea2">({{ item_panier.libelle_couleur }})</small>
                             {% endif %}
@@ -21,27 +21,27 @@
                             </td>
                             <td>{{item_panier.quantite}}</td>
                             <td>{{item_panier.prix}}</td>
-                            <td>{{ "{:,.2f} €".format((item_panier.prix * item_panier.quantite)) }}{#{(panier.article.prix * panier.quantite)|number_format(2) }#}</td>
+                            <td>{{ item_panier.sous_total }}</td>
                             <td>
 {# #}                            {% if item_panier.stock is defined %}
 {# #}                               {% if item_panier.stock > 0 %}
                                 <form action="/client/panier/add"  style="display: inline-block;"  method="post">
-{# #}                                   <input type="hidden" name="id_declinaison_article" value="{{ item_panier.id_declinaison_article }}">
+{# #}                                   <input type="hidden" name="id_declinaison_lunette" value="{{ item_panier.id_declinaison_lunette }}">
                                         <input type="hidden" name="quantite" value="1">
-                                        <input type="hidden" name="id_article" value="{{ item_panier.id_article }}">
+                                        <input type="hidden" name="id_lunette" value="{{ item_panier.id_lunette }}">
                                     <button class="btn btn-primary" > + </button>
                                 </form>
 {# #}                               {% endif %}
 {# #}                           {% endif %}
                                 <form action="/client/panier/delete"   style="display: inline-block;"  method="post">
-{# #}                               <input type="hidden" name="id_declinaison_article" value="{{ item_panier.id_declinaison_article }}">
-                                    <input type="hidden" name="id_article" value="{{ item_panier.id_article }}">
+{# #}                               <input type="hidden" name="id_declinaison_lunette" value="{{ item_panier.id_declinaison_lunette }}">
+                                    <input type="hidden" name="id_lunette" value="{{ item_panier.id_lunette }}">
                                     <button class="btn btn-primary" > - </button>
                                 </form>
 
                                 <form action="/client/panier/delete/line"  style="display: inline-block;"  method="post">
-{# #}                               <input type="hidden" name="id_declinaison_article" value="{{ item_panier.id_declinaison_article }}">
-                                    <input type="hidden" name="id_article" value="{{ item_panier.id_article }}">
+{# #}                               <input type="hidden" name="id_declinaison_lunette" value="{{ item_panier.id_declinaison_lunette }}">
+                                    <input type="hidden" name="id_lunette" value="{{ item_panier.id_lunette }}">
                                     <button class="btn btn-primary" >Supprimer</button>
                                 </form>
                             </td>
@@ -60,8 +60,9 @@
                     </form>
                     {% endif %}
                     {% if prix_total %}
-                    Total à payer : <strong>{{ "{:,.2f} €".format(prix_total) }}</strong>
+                    Total à payer : <strong>{{ prix_total }}</strong>
                     {% endif %}
-
+            {% else %}
+                <h3>Il n'y a pas d'acticle dans le panier</h3>
             {% endif %}
             </div>
