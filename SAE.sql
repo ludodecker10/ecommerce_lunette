@@ -92,12 +92,12 @@ CREATE TABLE declinaison_lunette(
 );
 
 CREATE TABLE ligne_commande(
-   commande_id INT,
+   id_commande INT,
    id_declinaison_lunette INT,
    prix DECIMAL(10,2),
    quantite INT,
-   PRIMARY KEY(commande_id, id_declinaison_lunette),
-   FOREIGN KEY(commande_id) REFERENCES commande(id_commande),
+   PRIMARY KEY(id_commande, id_declinaison_lunette),
+   FOREIGN KEY(id_commande) REFERENCES commande(id_commande),
    FOREIGN KEY(id_declinaison_lunette) REFERENCES declinaison_lunette(id_declinaison_lunette)
 );
 
@@ -208,7 +208,7 @@ INSERT INTO declinaison_lunette(id_declinaison_lunette, stock, prix_declinaison,
             (27,10,105.00,'image14',14,2),
             (29,10,125.00,'image14.1',14,1),
             (30,10,104.00,'image15',15,1),
-            (31,10,130.00,'image15.1',15,2)
+            (31,10,130.00,'image15.1',15,2);
 
 INSERT INTO ligne_commande (id_commande, id_declinaison_lunette, prix, quantite) VALUES
                 (1,5,59.99,3),
@@ -223,7 +223,7 @@ INSERT INTO ligne_commande (id_commande, id_declinaison_lunette, prix, quantite)
                 (7,3,120.99,1),
                 (8,8,150.00,8),
                 (8,4,130.00,1),
-                (9,12,7000.0,1),
+                (9,12,7000.00,1),
                 (10,2,80.00,4),
                 (10,5,54.99,1),
                 (11,8,150.00,4),
